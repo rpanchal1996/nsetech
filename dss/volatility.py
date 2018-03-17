@@ -13,8 +13,8 @@ def get_adj_close(df, n):
     return df[-n:]['AdjustedClose'].astype('float')
 
 def get_volatility(ticker, n_days):
-    df_ticker = get_adj_close(df_from_ticker(ticker))
-    df_dji = get_adj_close(df_from_ticker("DJI"))
+    df_ticker = get_adj_close(df_from_ticker(ticker), n_days)
+    df_dji = get_adj_close(df_from_ticker("DJI"), n_days)
     std_tick = df_ticker.std()/df_ticker.mean()
     std_dji = df_dji.std()/df_dji.mean()
     return (std_tick - std_dji)/std_dji * 100
