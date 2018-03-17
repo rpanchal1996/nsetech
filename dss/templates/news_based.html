@@ -1,0 +1,185 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+	
+{% block css %}
+  <style>
+  </style>
+{% endblock %}
+{% block content %}
+    <div class="row">
+		<div class="col-lg-8 col-md-6 col-sm-6 col-xs-12">
+			<div class="panel panel-default card-view">
+				<div class="panel-heading">
+					<div class="pull-left">
+						<h6 class="panel-title txt-dark">line Chart</h6>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				<div class="panel-wrapper collapse in">
+					<div id="morris_extra_line_chart" class="morris-chart"></div>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+			<div class="panel panel-default card-view">
+				<div class="panel-heading">
+					<div class="pull-left">
+						<h6 class="panel-title txt-dark">Twitter Feeds</h6>
+					</div>
+					<div class="pull-right">
+						<a href="#" class="pull-left inline-block mr-15">
+							<i class="zmdi zmdi-download"></i>
+						</a>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				<div class="panel-wrapper collapse in">
+					<div class="panel-body row">
+							<div class="table-wrap sm-data-box-2">
+							<div class="table-responsive">
+								<table  class="table  top-countries mb-0">
+									<tbody>
+										<tr>
+											<td>
+												<span class="country-name txt-dark pl-15">Aland</span>
+											</td>
+											<td class="text-right">
+												<span class="badge badge-warning transparent-badge weight-500">57%</span>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<span class="country-name txt-dark pl-15">Angola</span>
+											</td>
+											<td class="text-right">
+												<span class="badge badge-danger transparent-badge weight-500">17%</span>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<span class="country-name txt-dark pl-15">Anguilla</span>
+											</td>
+											
+											<td class="text-right">
+												<span class="badge badge-info transparent-badge weight-500">27%</span>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<span class="country-name txt-dark pl-15">Bahrain</span>
+											</td>
+											<td class="text-right">
+												<span class="badge badge-danger transparent-badge weight-500">17%</span>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<span class="country-name txt-dark pl-15">Australia</span>
+											</td>
+											<td class="text-right">
+												<span class="badge badge-primary transparent-badge weight-500">51%</span>
+											</td>
+										</tr>
+										
+										<tr>
+											<td>
+												<span class="country-name txt-dark pl-15">Austria</span>
+											</td>
+											
+											<td class="text-right">
+												<span class="badge badge-warning transparent-badge weight-500">10%</span>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<span class="country-name txt-dark pl-15">Belgium</span>
+											</td>
+											<td class="text-right">
+												<span class="badge badge-success transparent-badge weight-500">27%</span>
+											</td>
+										</tr>
+										<tr>
+											<td class="txt-dark">
+													<span class="country-name txt-dark pl-15">other</span>	
+											</td>
+											
+											<td class="text-right">
+												<span class="badge badge-warning transparent-badge weight-500">10%</span>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>	
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block js %}
+  <script>/*Morris Init*/
+	$(function() {
+		"use strict";
+		
+		if($('#morris_extra_line_chart').length > 0)
+			Morris.Line({
+	        element: 'morris_extra_line_chart',
+	        data: [{
+	            period: '2010',
+	            iphone: 50,
+	            ipad: 80,
+	            itouch: 20
+	        }, {
+	            period: '2011',
+	            iphone: 130,
+	            ipad: 100,
+	            itouch: 80
+	        }, {
+	            period: '2012',
+	            iphone: 80,
+	            ipad: 60,
+	            itouch: 70
+	        }, {
+	            period: '2013',
+	            iphone: 70,
+	            ipad: 200,
+	            itouch: 140
+	        }, {
+	            period: '2014',
+	            iphone: 180,
+	            ipad: 150,
+	            itouch: 140
+	        }, {
+	            period: '2015',
+	            iphone: 105,
+	            ipad: 100,
+	            itouch: 80
+	        },
+	         {
+	            period: '2016',
+	            iphone: 250,
+	            ipad: 150,
+	            itouch: 200
+	        }],
+	        xkey: 'period',
+	        ykeys: ['iphone', 'ipad', 'itouch'],
+	        labels: ['iPhone', 'iPad', 'iPod Touch'],
+	        pointSize: 2,
+	        fillOpacity: 0,
+			lineWidth:2,
+			pointStrokeColors:['#177ec1', '#dc4666', '#e69a2a'],
+			behaveLikeLine: true,
+			gridLineColor: '#878787',
+			hideHover: 'auto',
+			lineColors: ['#177ec1', '#dc4666', '#e69a2a'],
+			resize: true,
+			gridTextColor:'#878787',
+			gridTextFamily:"Roboto"
+	        
+	    });
+		
+	});
+  </script>
+{% endblock %}

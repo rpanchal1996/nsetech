@@ -20,5 +20,6 @@ from dss import views
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^base/', views.index),
-    url(r'^test/', views.test),
+    url(r'^Risk_Analysis/', views.risk, name='risk-analysis'),
+    url(r'^Sentimental_Analysis/', views.news, name='Sentimental_Analysis-analysis'),
 ]
