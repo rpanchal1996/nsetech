@@ -1,0 +1,184 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block css %}
+
+  <style>
+    path {
+      stroke: #fff;
+      fill-rule: evenodd;
+    }
+    .ct-label{
+      color: #fff!important;
+    }
+  </style>
+  <link href="{% static "vendors/bower_components/chartist/dist/chartist.min.css" %}" rel="stylesheet" type="text/css"/>
+{% endblock %}
+{% block content %}
+    <div class="row">
+      <div class="col-lg-4 col-xs-12">
+          <div class="panel panel-default card-view panel-refresh personality">
+            <div class="panel-heading">
+                <div class="pull-left">
+                  <h6 class="panel-title txt-dark">Personality Analysis</h6>
+                </div>
+                <div class="clearfix"></div>
+              </div>
+              <div class="panel-wrapper collapse in">
+                <div id="panel-body" class="panel-body">
+                  
+                </div>
+              </div>
+          </div>
+      </div>
+      <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+            <div class="panel panel-default card-view">
+              <div class="panel-wrapper collapse in">
+                <div class="panel-body sm-data-box-1">
+                  <span class="uppercase-font weight-500 font-14 block text-center txt-dark">Risk Index</span> 
+                  <div class="cus-sat-stat weight-500 txt-success text-center mt-5">
+                    <span class="counter-anim">{{ RiskCap }}</span><span>%</span>
+                  </div>
+                  <div class="progress-anim mt-20">
+                    <div class="progress">
+                      <div class="progress-bar progress-bar-success wow animated progress-animated" role="progressbar" aria-valuenow="{{ RiskCap }}" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="panel panel-default card-view">
+              <div class="panel-heading">
+                <div class="pull-left">
+                  <h6 class="panel-title txt-dark">Relative Volitility(DOW JONES) </h6>
+                </div>
+                <div class="clearfix"></div>
+              </div>
+              <div class="panel-wrapper collapse in">
+                <div class="panel-body">
+                  <div id="ct_chart_4" class="ct-chart ct-perfect-fourth"></div>
+                </div>
+              </div>
+            </div>
+      </div>
+      <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+            <div class="panel panel-default card-view">
+              <div class="panel-heading">
+                <div class="pull-left">
+                  <h6 class="panel-title txt-dark">Recommended Stocks</h6>
+                </div>
+                <div class="clearfix"></div>
+              </div>
+              <div class="panel-wrapper collapse in">
+                <div class="panel-body">
+                  <div>
+                    <h3 class="pull-left inline-block capitalize-font txt-dark">
+                      Ticker
+                    </h3>
+                    <h3 class=" pull-right">Risk Value</h3>
+                    <div class="clearfix"></div>
+                    <hr class="light-grey-hr row mt-10 mb-10"/>
+                    
+                    {% for stock in Stocks %}
+                      <span class="pull-left inline-block capitalize-font txt-dark">
+                        {{ stock.T_id }}
+                      </span>
+                      <span class="label label-warning pull-right">{{ stock.Risk }}</span>
+                      <div class="clearfix"></div>
+                      <hr class="light-grey-hr row mt-10 mb-10"/>
+                    {% endfor %}
+                  </div>
+                </div>  
+              </div>
+            </div>
+          </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+  <script src="//d3js.org/d3.v3.min.js"></script>
+
+  <script src="{% static "vendors/bower_components/chartist/dist/chartist.min.js" %}"></script>
+  <script>
+    var Tickers = {{ TickerId|safe }};
+    var risk = {{ RiskValues|safe }};
+    console.log(Tickers);
+    console.log(risk);
+    if( $('#ct_chart_4').length > 0 ){
+    new Chartist.Bar('#ct_chart_4',{
+      labels: Tickers,
+        series: [
+        risk
+        ]
+      },
+      {
+        axisX: {
+          Tickers 
+        }
+      });
+  }
+  </script>
+  <script>
+      var width = 380,
+          height = 465,
+          radius = (Math.min(width, height) / 2) - 10;
+
+      var formatNumber = d3.format(",d");
+
+      var x = d3.scale.linear()
+          .range([0, 2 * Math.PI]);
+
+      var y = d3.scale.sqrt()
+          .range([0, radius]);
+
+      var color = d3.scale.category20c();
+
+      var partition = d3.layout.partition()
+          .value(function(d) {
+            var val = d.size
+            val=val/100000000000000;
+            return Math.round(Number(val));
+          });
+
+      var arc = d3.svg.arc()
+          .startAngle(function(d) { return Math.max(0, Math.min(2 * Math.PI, x(d.x))); })
+          .endAngle(function(d) { return Math.max(0, Math.min(2 * Math.PI, x(d.x + d.dx))); })
+          .innerRadius(function(d) { return Math.max(0, y(d.y)); })
+          .outerRadius(function(d) { return Math.max(0, y(d.y + d.dy)); });
+
+      var svg = d3.select("div#panel-body").append("svg")
+          .attr("width", width)
+          .attr("height", height)
+        .append("g")
+          .attr("transform", "translate(" + width / 2 + "," + (height / 2) + ")");
+
+      d3.json("{%static 'elonmuskpersonality.json' %}", function(error, root) {
+
+        if (error) console.log(error);
+
+        svg.selectAll("path")
+            .data(partition.nodes(root))
+          .enter().append("path")
+            .attr("d", arc)
+            .style("fill", function(d) { return color((d.children ? d : d.parent).name); })
+            .on("click", click)
+          .append("title")
+            .text(function(d) { return d.name + "\n" + formatNumber((d.value)); });
+      });
+
+      function click(d) {
+        svg.transition()
+            .duration(750)
+            .tween("scale", function() {
+              var xd = d3.interpolate(x.domain(), [d.x, d.x + d.dx]),
+                  yd = d3.interpolate(y.domain(), [d.y, 1]),
+                  yr = d3.interpolate(y.range(), [d.y ? 20 : 0, radius]);
+              return function(t) { x.domain(xd(t)); y.domain(yd(t)).range(yr(t)); };
+            })
+          .selectAll("path")
+            .attrTween("d", function(d) { return function() { return arc(d); }; });
+      }
+
+      d3.select(self.frameElement).style("height", height + "px");
+  </script>
+{% endblock %}
