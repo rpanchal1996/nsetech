@@ -18,4 +18,3 @@ def get_volatility(ticker, n_days):
     std_tick = df_ticker.std()/df_ticker.mean()
     std_dji = df_dji.std()/df_dji.mean()
     return (std_tick - std_dji)/std_dji * 100
-
