@@ -123,3 +123,31 @@ def rnn_prediction(request, id):
 	print(to_render)
 	return render(request, 'rnn_prediction.html', {"graphpoints" : to_render})
 	# return HttpResponse("ok")
+
+
+def reuters_prediction(request, id):
+	obj = stock.objects.get(id=id)
+	route = str(os.path.dirname(os.path.realpath(__file__)))
+	predictions = []
+	yvalues = []
+	prediction_file= route+'/sentiment-headlines/'+ obj.stock_name + '.json'
+	with open(prediction_file,'r') as myfile:
+		predictions = json.load(myfile)
+	print(type(predictions))
+	predictions = json.loads(predictions)
+	'''
+	to_render = []
+	index = 1
+	for index,prediction in enumerate(predictions):
+		startvalue = index*50
+		endvalue = startvalue + 50
+		for pred,y in zip(prediction,yvalues[startvalue:endvalue]):
+			to_send = {}
+			to_send['yvalues']= str(y)
+			to_send['pred'] = str(pred)
+			to_send['index'] = str(index)
+			index+=1
+			to_render.append(to_send)
+	print(to_render)
+	'''
+	return render(request, 'reuters_prediction.html', {"graphpoints" : predictions[100:500]})

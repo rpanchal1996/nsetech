@@ -27,4 +27,5 @@ urlpatterns = [
     url(r'nse_portfolio/', views.portfolio, name='nse_portfolio'),
     url(r'^stock/(\d+)/$', views.tweet, name='stock-details'),
     url(r'^rnnprediction/(\d+)/$', views.rnn_prediction, name='rnn-prediction'),
+    url(r'^reutersprediction/(\d+)/$', views.reuters_prediction, name='reuters-prediction'),
 ]
