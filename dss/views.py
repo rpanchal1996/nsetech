@@ -48,9 +48,9 @@ def tweet (request, id):
 		return HttpResponse(json.dumps(stock_tweets), content_type="application/json")
 
 def reportAnalysis(request):
-	#root_path = r'C:\Users\Jarvis\Desktop\Projects\NSEhackathon\nse_tech\dss\static\yash\\'
-	#root_path = static('yash/')
-	root_path = '/home/rudresh/Desktop/nse-tech/GIT_FOLDER_DO_NOT_MESS/nsetech/dss/static/yash/'
+	root_path = r'C:\Users\Jarvis\Desktop\Projects\NSEhackathon\nse_tech\dss\static\yash\\'
+	# root_path = static('yash/')
+	# root_path = '/home/rudresh/Desktop/nse-tech/GIT_FOLDER_DO_NOT_MESS/nsetech/dss/static/yash/'
 	filepaths = os.listdir(root_path)
 	to_send_master = []
 	for filepath in filepaths:
@@ -65,7 +65,7 @@ def reportAnalysis(request):
 				dict_to_add['stock'] = "{0:2.3f}".format(float(row[2])/10)
 				to_send.append(dict_to_add)
 		to_send_master.append(to_send)
-	print (filepath)
+	print (to_send_master)
 	return render(request, 'zScore.html',{'to_send':to_send_master})
 
 def portfolio(request):
@@ -86,3 +86,37 @@ def portfolio(request):
 			data2.append(float(row[2])*10)
 	print(labels)
 	return render(request, 'portfolio.html', {"labels" : labels, 'data1':data1,'data2' :data2})
+
+def sentiment_prediction(request):
+	sentiment =[]
+	print("rUFBG")
+	route = str(os.path.dirname(os.path.realpath(__file__)))
+	with open(route +'/sentiment.json') as myfile:
+		sentiment = json.load(myfile)
+	print(sentiment)
+	return render(request, 'sentiment_prediction.html',{'sentiment' : sentiment} )
+
+
+def rnn_prediction(request, id):
+	obj = stock.objects.get(id=id)
+	route = str(os.path.dirname(os.path.realpath(__file__)))
+	predictions = []
+	yvalues = []
+	prediction_file= route+'/results/'+ obj.stock_name + '_prediction.json'
+	yvalue_file =  route+'/results/'+ obj.stock_name + '_yvalue.json'
+	with open(prediction_file,'r') as myfile:
+		predictions = json.load(myfile)
+	with open(yvalue_file,'r') as myfile:
+		yvalues = json.load(myfile)
+	to_render = []
+	index = 1
+	for pred,y in zip(predictions[0],yvalues[:50]):
+		to_send = {}
+		to_send['yvalues']= str(y)
+		to_send['pred'] = str(pred)
+		to_send['index'] = str(index)
+		index+=1
+		to_render.append(to_send)
+	print(to_render)
+	return render(request, 'rnn_prediction.html', {"graphpoints" : to_render})
+	# return HttpResponse("ok")

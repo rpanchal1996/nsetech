@@ -20,9 +20,11 @@ from dss import views
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^base/', views.index),
-    url(r'^Risk_Analysis/', views.risk, name='risk-analysis'),
-    url(r'^Sentimental_Analysis/', views.news, name='sentimentals-analysis'),
+    url(r'^riskanalysis/', views.risk, name='risk-analysis'),
+    url(r'^sentimentalanalysis/', views.news, name='sentimentals-analysis'),
+    url(r'^sentimentprediction/', views.sentiment_prediction, name='sentiment-prediction'),
     url(r'company_zscore/', views.reportAnalysis, name='company-zscore'),
     url(r'nse_portfolio/', views.portfolio, name='nse_portfolio'),
     url(r'^stock/(\d+)/$', views.tweet, name='stock-details'),
+    url(r'^rnnprediction/(\d+)/$', views.rnn_prediction, name='rnn-prediction'),
 ]

@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+	
+{% block css %}
+  <style>
+  	.Scrollabel{
+  		height: 400px;
+  		overflow-y: scroll;
+  	}
+  </style>
+{% endblock %}
+{% block content %}
+    <div class="row">
+		<div class="col-lg-12 col-md-6 col-sm-6 col-xs-12">
+			<div class="panel panel-default card-view">
+				<div class="panel-heading">
+					<div class="pull-left">
+						<h4>Stock Prediction</h4>
+						<h6 class="panel-title txt-dark">Implemented recurrentneural netwworks, taking reuters news stream, reddit top articles and historical data as parameters. Automatically predicted buy/sell trigger points.</h6>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				<div class="panel-wrapper collapse in">
+					<div id="morris_extra_line_chart" class="morris-chart"></div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+{% endblock %}
+
+{% block js %}
+
+    <script src="{% static "vendors/bower_components/morris.js/morris.min.js" %}"></script>
+    <script src="{% static "vendors/bower_components/jquery-toast-plugin/dist/jquery.toast.min.js" %}"></script>
+
+	<script type="text/javascript">
+		var data1 = {{ sentiment|safe }};
+		var finaldata = [];
+		for(var i=0;i<data1.length;i++){
+			if(data1[i].buy == "Null")
+			{
+				data1[i].buy = null;
+			}
+			if(data1[i].sell == "Null")
+			{
+				data1[i].sell = null;
+			}
+		}
+	</script>
+  <script>/*Morris Init*/
+		$(function() {
+			"use strict";
+			
+			if($('#morris_extra_line_chart').length > 0)
+				Morris.Line({
+		        element: 'morris_extra_line_chart',
+		        data: data1,
+		        xkey: 'index',
+		        ykeys: ['buy','sell','stock'],
+		        labels: ['buy','sell', 'stock'],
+		        pointSize: 2,
+		        fillOpacity: 1,
+				lineWidth: 1,
+				pointStrokeColors:['yellow', 'white', '#177ec1'],
+				pointFillColors:['yellow', 'white', '#177ec1'],
+				behaveLikeLine: true,
+				gridLineColor: '#878787',
+				hideHover: 'auto',
+				lineColors: ['#212121', '#212121', '#177ec1'],
+				resize: true,
+				gridTextColor:'#878787',
+				gridTextFamily:"Roboto"
+		    });
+			
+		});
+  </script>
+ 
+{% endblock %}
