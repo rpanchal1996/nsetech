@@ -175,7 +175,7 @@ print "RMSE: ", np.sqrt(np.mean((predictions-y_test)**2))
 
 with open(save_folder_base+'predictions.csv','w') as myfile:
     for value in predictions:
-        myfile.write(str(value)+'\n')
+        myfile.write(str(value[0])+'\n')
 
 '''
 f, a = simple_ax(figsize=(10,6))
@@ -213,10 +213,11 @@ for segment in range(int(len(y_test)/days)):
 a.set_xlabel('Day')
 a.set_ylabel('Price')
 a.set_title('AAPL Test Set 30 Day Lookahead')
-plt.show()
+#plt.show()
 
 predictions_json = [[np.asscalar(val) for val in sublist] for sublist in predictions_json]
 print predictions_json
+
 with open(save_folder_base+'prediction_list.json','w') as myfile:
     json.dump(predictions_json,myfile)
 
@@ -253,20 +254,25 @@ def walk_buy_sell(data, model, return_threshold=.05, days_topredict=30):
 
 buy_dates, sell_dates = walk_buy_sell(X_test, model, return_threshold=0.5, days_topredict=30)
 
-print type(buy_dates)
-print type(sell_dates)
-#print buy_dates
-#print sell_dates
+
 save_folder_base = '/home/rudresh/Desktop/nse-tech/Stock-Prediction/models/outputs_buy_sell/'
+
 with open(save_folder_base+'stock_value.csv','w') as myfile:
     for value in y_test:
         myfile.write(str(value)+'\n')
+
+print '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'
+print sell_dates
+print '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'
+print buy_dates
+print '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'
+
 with open(save_folder_base+'buy_date.csv','w') as myfile:
     for value in buy_dates:
         myfile.write(str(value)+'\n')
 with open(save_folder_base+'sell_date.csv','w') as myfile:
     for value in sell_dates:
-        myfile.write(str(save_folder_base)+'\n')
+        myfile.write(str(value)+'\n')
 
 f,a = simple_ax(figsize=(10,6))
 a.plot(inv_price_transform(y_test, scaler), c='k')
