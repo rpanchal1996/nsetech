@@ -8,6 +8,7 @@ from .models import *
 import csv
 import pandas
 import os
+from django.contrib.staticfiles.templatetags.staticfiles import static
 # Create your views here.
 
 def index (request):
@@ -47,7 +48,9 @@ def tweet (request, id):
 		return HttpResponse(json.dumps(stock_tweets), content_type="application/json")
 
 def reportAnalysis(request):
-	root_path = r'C:\Users\Jarvis\Desktop\Projects\NSEhackathon\nse_tech\dss\static\yash\\'
+	#root_path = r'C:\Users\Jarvis\Desktop\Projects\NSEhackathon\nse_tech\dss\static\yash\\'
+	#root_path = static('yash/')
+	root_path = '/home/rudresh/Desktop/nse-tech/GIT_FOLDER_DO_NOT_MESS/nsetech/dss/static/yash/'
 	filepaths = os.listdir(root_path)
 	to_send_master = []
 	for filepath in filepaths:
@@ -63,4 +66,4 @@ def reportAnalysis(request):
 				to_send.append(dict_to_add)
 		to_send_master.append(to_send)
 	print (filepath)
-	return render(request, 'ZScore.html',{'to_send':to_send_master})
+	return render(request, 'zScore.html',{'to_send':to_send_master})
