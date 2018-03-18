@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+	
+{% block css %}
+  <style>
+  	.Scrollabel{
+  		height: 400px;
+  		overflow-y: scroll;
+  	}
+  </style>
+{% endblock %}
+{% block content %}
+    <div class="row">
+		<div class="col-lg-12 col-md-6 col-sm-6 col-xs-12">
+			<div class="panel panel-default card-view">
+				<div class="panel-heading">
+					<div class="pull-left">
+						<h6 class="panel-title txt-dark">Reuters</h6>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				<div class="panel-wrapper collapse in">
+					<div id="Reuters" class="morris-chart"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+{% endblock %}
+
+{% block js %}
+	<script type="text/javascript">
+	var graphpoints = {{ graphpoints|safe }};
+	console.log(graphpoints[0]);
+	</script>
+  <script>/*Morris Init*/
+		$(function() {
+			"use strict";
+			
+			if($('#Reuters').length > 0)
+				Morris.Line({
+		        element: 'Reuters',
+		        data: graphpoints,
+		        xkey: 'period',
+		        ykeys: ['polarity', 'close'],
+		        labels: ['polarity', 'close'],
+		        parseTime: false,
+		        pointSize: 3,
+		        fillOpacity: 0,
+				lineWidth:2,
+				pointStrokeColors:['#177ec1', '#dc4666'],
+				behaveLikeLine: true,
+				gridLineColor: '#878787',
+				hideHover: 'auto',
+				lineColors: ['#177ec1', '#dc4666'],
+				resize: true,
+				gridTextColor:'#878787',
+				gridTextFamily:"Roboto"
+		        
+		    });
+		});
+  </script>
+{% endblock %}
