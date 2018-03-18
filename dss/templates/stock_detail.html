@@ -11,7 +11,7 @@
 {% endblock %}
 {% block content %}
     <div class="row">
-		<div class="col-lg-8 col-md-6 col-sm-6 col-xs-12">
+		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
 			<div class="panel panel-default card-view">
 				<div class="panel-heading">
 					<div class="pull-left">
@@ -24,23 +24,32 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
 			<div class="panel panel-default card-view">
 				<div class="panel-heading">
 					<div class="pull-left">
-						<h6 class="panel-title txt-dark">Stock Name</h6>
+						<h6 class="panel-title txt-dark">Twitter Feeds</h6>
+					</div>
+					<div class="pull-right">
+						<a href="#" class="pull-left inline-block mr-15">
+							<i class="zmdi zmdi-download"></i>
+						</a>
 					</div>
 					<div class="clearfix"></div>
 				</div>
 				<div  class="panel-wrapper collapse in">
 					<div  class="panel-body" id="notificatonBox">
-					{% for stock in stocks %}
-						<div class="pull-right">
-							<a href="/stock/{{stock.id}}/" class="pull-left inline-block mr-15">
-								{{ stock.stock_name }}
-							</a>
-						</div>
-					{% endfor %}
+						{% for stock in StockName %}
+							{% if stock.score == 'zero' %}
+								<div class="alert alert-warning alert-dismissable">{{ stock.tweet }}</div>
+							{% endif %}
+							{% if stock.score == 'pos' %}
+								<div class="alert alert-success alert-dismissable">{{ stock.tweet }}</div>
+							{% endif %}
+							{% if stock.score == 'neg' %}
+								<div class="alert alert-danger alert-dismissable">{{ stock.tweet }}</div>
+							{% endif %}
+						{% endfor %}
 					</div>
 				</div>
 			</div>
@@ -112,5 +121,51 @@
 			
 		});
   </script>
- 
+  <script type="text/javascript">
+	  function GetTweets()
+	  {
+	  		var StockName = '{{ StockData.stock_name|safe }}';
+	  		console.log(StockName);
+ 			setInterval(function()
+ 			{
+ 			 $.ajax({
+                 type:"POST",
+                 url: '{{ url|safe }}/',
+                 data: {
+                        'StockName': StockName // from form
+                        },
+                 success: function(data, status){
+					  var feeds = data;
+					  var html = '';
+					  var color = '';
+					  console.log(feeds);
+  					  for (var i = 0; i < feeds.length; i++)
+					  {
+					  	color ='';
+					  	if(feeds[i].score == 'pos')
+					  	{
+					  		color = 'alert-success';
+					  	}
+					  	else if(feeds[i].score == 'zero')
+					  	{
+					  		color = 'alert-warning';	
+					  	}
+					  	else if(feeds[i].score == 'neg')
+					  	{
+					  		console.log(feeds[i].score);
+					  		color = 'alert-danger';
+					  	}
+			          	html += '<div class="alert '+ color + ' alert-dismissable">' + feeds[i].tweet + '</div>';
+					  }
+					  $('#notificatonBox').html('');
+					  $('#notificatonBox').append(html);
+                 }
+				});
+			}, 50000);
+	    }
+	  $('#notificatonBox').slimScroll({
+		    height: '348px'
+		});
+	  GetTweets();
+  </script>
 {% endblock %}
