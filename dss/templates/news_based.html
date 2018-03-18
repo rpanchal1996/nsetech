@@ -15,7 +15,7 @@
 			<div class="panel panel-default card-view">
 				<div class="panel-heading">
 					<div class="pull-left">
-						<h6 class="panel-title txt-dark">line Chart</h6>
+						<h6 class="panel-title txt-dark">20 day historical</h6>
 					</div>
 					<div class="clearfix"></div>
 				</div>
@@ -49,6 +49,12 @@
 {% endblock %}
 
 {% block js %}
+  <script type="text/javascript">
+  	
+  var dataset = {{ rendered|safe }};
+
+  </script>
+
   <script>/*Morris Init*/
 		$(function() {
 			"use strict";
@@ -56,54 +62,18 @@
 			if($('#morris_extra_line_chart').length > 0)
 				Morris.Line({
 		        element: 'morris_extra_line_chart',
-		        data: [{
-		            period: '2010',
-		            iphone: 50,
-		            ipad: 80,
-		            itouch: 20
-		        }, {
-		            period: '2011',
-		            iphone: 130,
-		            ipad: 100,
-		            itouch: 80
-		        }, {
-		            period: '2012',
-		            iphone: 80,
-		            ipad: 60,
-		            itouch: 70
-		        }, {
-		            period: '2013',
-		            iphone: 70,
-		            ipad: 200,
-		            itouch: 140
-		        }, {
-		            period: '2014',
-		            iphone: 180,
-		            ipad: 150,
-		            itouch: 140
-		        }, {
-		            period: '2015',
-		            iphone: 105,
-		            ipad: 100,
-		            itouch: 80
-		        },
-		         {
-		            period: '2016',
-		            iphone: 250,
-		            ipad: 150,
-		            itouch: 200
-		        }],
+		        data: dataset,
 		        xkey: 'period',
-		        ykeys: ['iphone', 'ipad', 'itouch'],
-		        labels: ['iPhone', 'iPad', 'iPod Touch'],
+		        ykeys: ['close'],
+		        labels: ['ClosingValue'],
 		        pointSize: 2,
 		        fillOpacity: 0,
 				lineWidth:2,
-				pointStrokeColors:['#177ec1', '#dc4666', '#e69a2a'],
+				pointStrokeColors:['#177ec1'],
 				behaveLikeLine: true,
 				gridLineColor: '#878787',
 				hideHover: 'auto',
-				lineColors: ['#177ec1', '#dc4666', '#e69a2a'],
+				lineColors: ['#177ec1'],
 				resize: true,
 				gridTextColor:'#878787',
 				gridTextFamily:"Roboto"
