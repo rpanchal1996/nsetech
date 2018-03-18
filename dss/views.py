@@ -9,6 +9,7 @@ import csv
 import pandas
 import os
 from django.contrib.staticfiles.templatetags.staticfiles import static
+import requests
 # Create your views here.
 
 def index (request):
@@ -31,8 +32,14 @@ def risk (request):
 	return render(request, 'risk.html', {"Stocks" : Stocks,"TickerId" : TickerId, "RiskValues" : RiskValues, "RiskCap" : risk[0]})
 
 def news (request):
-	obj = stock.objects.all()
-	return render(request, 'news_based.html', {"stocks" : obj})
+	objects = stock.objects.all()
+	names = [obj.stock_name for obj in objects]
+	api_key = 'P4YT89Q7RT54PR6D'
+	graph1_url = 'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol='+names[0]+'&interval=15min&outputsize=full&apikey='+api_key
+	r = requests.get(graph1_url)
+	data = r.json()
+	print (data)
+	return render(request, 'news_based.html', {"stocks" : objects})
 
 @csrf_exempt
 def tweet (request, id):
@@ -48,9 +55,9 @@ def tweet (request, id):
 		return HttpResponse(json.dumps(stock_tweets), content_type="application/json")
 
 def reportAnalysis(request):
-	root_path = r'C:\Users\Jarvis\Desktop\Projects\NSEhackathon\nse_tech\dss\static\yash\\'
+	#root_path = r'C:\Users\Jarvis\Desktop\Projects\NSEhackathon\nse_tech\dss\static\yash\\'
 	# root_path = static('yash/')
-	# root_path = '/home/rudresh/Desktop/nse-tech/GIT_FOLDER_DO_NOT_MESS/nsetech/dss/static/yash/'
+	root_path = '/home/rudresh/Desktop/nse-tech/GIT_FOLDER_DO_NOT_MESS/nsetech/dss/static/yash/'
 	filepaths = os.listdir(root_path)
 	to_send_master = []
 	for filepath in filepaths:
