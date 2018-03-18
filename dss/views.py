@@ -110,13 +110,16 @@ def rnn_prediction(request, id):
 		yvalues = json.load(myfile)
 	to_render = []
 	index = 1
-	for pred,y in zip(predictions[0],yvalues[:50]):
-		to_send = {}
-		to_send['yvalues']= str(y)
-		to_send['pred'] = str(pred)
-		to_send['index'] = str(index)
-		index+=1
-		to_render.append(to_send)
+	for index,prediction in enumerate(predictions):
+		startvalue = index*50
+		endvalue = startvalue + 50
+		for pred,y in zip(prediction,yvalues[startvalue:endvalue]):
+			to_send = {}
+			to_send['yvalues']= str(y)
+			to_send['pred'] = str(pred)
+			to_send['index'] = str(index)
+			index+=1
+			to_render.append(to_send)
 	print(to_render)
 	return render(request, 'rnn_prediction.html', {"graphpoints" : to_render})
 	# return HttpResponse("ok")
