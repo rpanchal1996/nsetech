@@ -151,3 +151,15 @@ def reuters_prediction(request, id):
 	print(to_render)
 	'''
 	return render(request, 'reuters_prediction.html', {"graphpoints" : predictions[100:500]})
+
+
+def summarization(request):
+	route = str(os.path.dirname(os.path.realpath(__file__)))
+	filepath = route+'/static/aapl.txt'
+	text = ''
+	with open(filepath,'r',encoding="utf8") as myfile:
+		text = myfile.read()
+	print (text)
+	return render(request,'report_summarization.html', {'context' : text})
+
+	#f = open(os.path.join(root_path, 'aapl.txt'))
