@@ -67,3 +67,22 @@ def reportAnalysis(request):
 		to_send_master.append(to_send)
 	print (filepath)
 	return render(request, 'zScore.html',{'to_send':to_send_master})
+
+def portfolio(request):
+	# root_path = '/home/rudresh/Desktop/nse-tech/GIT_FOLDER_DO_NOT_MESS/nsetech/dss/static/'
+	# filepaths = os.listdir(root_path)
+	# to_send_master = []
+	# for filepath in filepaths:
+	to_send = []
+	labels = []
+	data1 = []
+	data2 = []
+	# 	filepath = root_path+filepath
+	with open('dss/static/investor.csv','r') as myfile:
+		reader = csv.reader(myfile, delimiter=',')
+		for row in reader:
+			labels.append(row[0])
+			data1.append(row[1])
+			data2.append(float(row[2])*10)
+	print(labels)
+	return render(request, 'portfolio.html', {"labels" : labels, 'data1':data1,'data2' :data2})
