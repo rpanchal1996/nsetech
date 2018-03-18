@@ -35,11 +35,19 @@ def news (request):
 	objects = stock.objects.all()
 	names = [obj.stock_name for obj in objects]
 	api_key = 'P4YT89Q7RT54PR6D'
-	graph1_url = 'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol='+names[0]+'&interval=15min&outputsize=full&apikey='+api_key
+	graph1_url = 'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol='+names[0]+'&outputsize=compact&apikey='+api_key
 	r = requests.get(graph1_url)
 	data = r.json()
-	print (data)
-	return render(request, 'news_based.html', {"stocks" : objects})
+	#data = json.loads(data)
+	data = data['Time Series (Daily)']
+	rendering = []
+	for datepoint in data:
+		instance_of_data = {}
+		instance_of_data['period'] = datepoint
+		instance_of_data['close'] = data[datepoint]['4. close']
+		rendering.append(instance_of_data)
+
+	return render(request, 'news_based.html', {"stocks" : objects,"rendered":rendering})
 
 @csrf_exempt
 def tweet (request, id):
@@ -142,6 +150,8 @@ def reuters_prediction(request, id):
 		predictions = json.load(myfile)
 	print(type(predictions))
 	predictions = json.loads(predictions)
+
+	#predictions[0]['stop']
 	'''
 	to_render = []
 	index = 1
