@@ -5,6 +5,9 @@ from django.http import JsonResponse
 import json
 from django.http import HttpResponse
 from .models import *
+import csv
+import pandas
+import os
 # Create your views here.
 
 def index (request):
@@ -43,8 +46,21 @@ def tweet (request, id):
 		stock_tweets = sentiment.tweet_sentiment(ticker)
 		return HttpResponse(json.dumps(stock_tweets), content_type="application/json")
 
-@csrf_exempt
-def getTweetFeeds(request):
-	ticker = request.POST.get("StockName")
-	stock_tweets = sentiment.tweet_sentiment(obj.stock_name)
-	return HttpResponse(json.dumps(stock_tweets), content_type="application/json")	
+def reportAnalysis(request):
+	root_path = r'C:\Users\Jarvis\Desktop\Projects\NSEhackathon\nse_tech\dss\static\yash\\'
+	filepaths = os.listdir(root_path)
+	to_send_master = []
+	for filepath in filepaths:
+		to_send = []
+		filepath = root_path+filepath
+		with open(filepath,'r') as myfile:
+			reader = csv.reader(myfile, delimiter=',')
+			for row in reader:
+				dict_to_add = {}
+				dict_to_add['period'] = row[0]
+				dict_to_add['zscore'] = "{0:2.3f}".format(float(row[1]))
+				dict_to_add['stock'] = "{0:2.3f}".format(float(row[2])/10)
+				to_send.append(dict_to_add)
+		to_send_master.append(to_send)
+	print (filepath)
+	return render(request, 'ZScore.html',{'to_send':to_send_master})

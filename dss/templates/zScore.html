@@ -1,0 +1,234 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+	
+{% block css %}
+  <style>
+  	.Scrollabel{
+  		height: 400px;
+  		overflow-y: scroll;
+  	}
+  </style>
+{% endblock %}
+{% block content %}
+    <div class="row">
+		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+			<div class="panel panel-default card-view">
+				<div class="panel-heading">
+					<div class="pull-left">
+						<h6 class="panel-title txt-dark">Apple</h6>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				<div class="panel-wrapper collapse in">
+					<div id="Apple" class="morris-chart"></div>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+			<div class="panel panel-default card-view">
+				<div class="panel-heading">
+					<div class="pull-left">
+						<h6 class="panel-title txt-dark">Microsoft</h6>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				<div class="panel-wrapper collapse in">
+					<div id="Microsoft" class="morris-chart"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+			<div class="panel panel-default card-view">
+				<div class="panel-heading">
+					<div class="pull-left">
+						<h6 class="panel-title txt-dark">FaceBook</h6>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				<div class="panel-wrapper collapse in">
+					<div id="Facebook" class="morris-chart"></div>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+			<div class="panel panel-default card-view">
+				<div class="panel-heading">
+					<div class="pull-left">
+						<h6 class="panel-title txt-dark">GE</h6>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				<div class="panel-wrapper collapse in">
+					<div id="GE" class="morris-chart"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+			<div class="panel panel-default card-view">
+				<div class="panel-heading">
+					<div class="pull-left">
+						<h6 class="panel-title txt-dark">Google</h6>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				<div class="panel-wrapper collapse in">
+					<div id="Google" class="morris-chart"></div>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+			<div class="panel panel-default card-view">
+				<div class="panel-heading">
+					<div class="pull-left">
+						<h6 class="panel-title txt-dark">Amazon</h6>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				<div class="panel-wrapper collapse in">
+					<div id="Amazon" class="morris-chart"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block js %}
+	<script type="text/javascript">
+	var graphpoints = {{ to_send|safe }};
+	console.log(graphpoints);
+	</script>
+  <script>/*Morris Init*/
+		$(function() {
+			"use strict";
+			
+			if($('#Apple').length > 0)
+				Morris.Line({
+		        element: 'Apple',
+		        data: graphpoints[0],
+		        xkey: 'period',
+		        ykeys: ['zscore', 'stock'],
+		        labels: ['zscore', 'stock'],
+		        pointSize: 3,
+		        fillOpacity: 0,
+				lineWidth:2,
+				pointStrokeColors:['#177ec1', '#dc4666'],
+				behaveLikeLine: true,
+				gridLineColor: '#878787',
+				hideHover: 'auto',
+				lineColors: ['#177ec1', '#dc4666'],
+				resize: true,
+				gridTextColor:'#878787',
+				gridTextFamily:"Roboto"
+		        
+		    });
+
+		    if($('#Amazon').length > 0)
+				Morris.Line({
+		        element: 'Amazon',
+		        data: graphpoints[1],
+		        xkey: 'period',
+		        ykeys: ['zscore', 'stock'],
+		        labels: ['zscore', 'stock'],
+		        pointSize: 3,
+		        fillOpacity: 0,
+				lineWidth:2,
+				pointStrokeColors:['#177ec1', '#dc4666'],
+				behaveLikeLine: true,
+				gridLineColor: '#878787',
+				hideHover: 'auto',
+				lineColors: ['#177ec1', '#dc4666'],
+				resize: true,
+				gridTextColor:'#878787',
+				gridTextFamily:"Roboto"
+		        
+		    });
+
+		    if($('#Facebook').length > 0)
+				Morris.Line({
+		        element: 'Facebook',
+		        data: graphpoints[2],
+		        xkey: 'period',
+		        ykeys: ['zscore', 'stock'],
+		        labels: ['zscore', 'stock'],
+		        pointSize: 3,
+		        fillOpacity: 0,
+				lineWidth:2,
+				pointStrokeColors:['#177ec1', '#dc4666'],
+				behaveLikeLine: true,
+				gridLineColor: '#878787',
+				hideHover: 'auto',
+				lineColors: ['#177ec1', '#dc4666'],
+				resize: true,
+				gridTextColor:'#878787',
+				gridTextFamily:"Roboto"
+		        
+		    });
+			
+			if($('#GE').length > 0)
+				Morris.Line({
+		        element: 'GE',
+		        data: graphpoints[3],
+		        xkey: 'period',
+		        ykeys: ['zscore', 'stock'],
+		        labels: ['zscore', 'stock'],
+		        pointSize: 3,
+		        fillOpacity: 0,
+				lineWidth:2,
+				pointStrokeColors:['#177ec1', '#dc4666'],
+				behaveLikeLine: true,
+				gridLineColor: '#878787',
+				hideHover: 'auto',
+				lineColors: ['#177ec1', '#dc4666'],
+				resize: true,
+				gridTextColor:'#878787',
+				gridTextFamily:"Roboto"
+		        
+		    });
+
+			if($('#Google').length > 0)
+				Morris.Line({
+		        element: 'Google',
+		        data: graphpoints[4],
+		        xkey: 'period',
+		        ykeys: ['zscore', 'stock'],
+		        labels: ['zscore', 'stock'],
+		        pointSize: 3,
+		        fillOpacity: 0,
+				lineWidth:2,
+				pointStrokeColors:['#177ec1', '#dc4666'],
+				behaveLikeLine: true,
+				gridLineColor: '#878787',
+				hideHover: 'auto',
+				lineColors: ['#177ec1', '#dc4666'],
+				resize: true,
+				gridTextColor:'#878787',
+				gridTextFamily:"Roboto"
+		        
+		    });
+			if($('#Microsoft').length > 0)
+				Morris.Line({
+		        element: 'Microsoft',
+		        data: graphpoints[5],
+		        xkey: 'period',
+		        ykeys: ['zscore', 'stock'],
+		        labels: ['zscore', 'stock'],
+		        pointSize: 3,
+		        fillOpacity: 0,
+				lineWidth:2,
+				pointStrokeColors:['#177ec1', '#dc4666'],
+				behaveLikeLine: true,
+				gridLineColor: '#878787',
+				hideHover: 'auto',
+				lineColors: ['#177ec1', '#dc4666'],
+				resize: true,
+				gridTextColor:'#878787',
+				gridTextFamily:"Roboto"
+		        
+		    });
+		});
+  </script>
+{% endblock %}

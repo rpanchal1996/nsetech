@@ -22,5 +22,6 @@ urlpatterns = [
     url(r'^base/', views.index),
     url(r'^Risk_Analysis/', views.risk, name='risk-analysis'),
     url(r'^Sentimental_Analysis/', views.news, name='sentimentals-analysis'),
+    url(r'^Company_ZScore/', views.reportAnalysis, name='sentimentals-analysis'),
     url(r'^stock/(\d+)/$', views.tweet, name='stock-details'),
 ]
